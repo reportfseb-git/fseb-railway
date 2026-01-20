@@ -17,4 +17,3 @@
       - key: SECRET_KEY
         generateValue: true
     plan: free
-    autoDeploy: true
