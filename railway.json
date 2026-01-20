@@ -1,53 +1,8 @@
-﻿# deploy_railway.ps1 - Complete Railway Deployment Script
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "   RAILWAY DEPLOYMENT PACKAGE           " -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
-
-$timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
-$deployFolder = "fseb_railway_$timestamp"
-
-Write-Host "`nðŸ“ Creating deployment package: $deployFolder" -ForegroundColor Yellow
-
-# Create directory
-New-Item -ItemType Directory -Path $deployFolder -Force | Out-Null
-cd $deployFolder
-
-# 1. Copy essential files
-$essentialFiles = @(
-    "app_azure_fixed.py",
-    "requirements.txt",
-    "railway.json",
-    "Procfile",
-    "runtime.txt",
-    ".gitignore"
-)
-
-Write-Host "`n1. Copying essential files..." -ForegroundColor Green
-foreach ($file in $essentialFiles) {
-    $source = "..\$file"
-    if (Test-Path $source) {
-        Copy-Item $source .
-        Write-Host "   âœ… $file" -ForegroundColor Gray
-    } else {
-        Write-Host "   âš   Missing: $file" -ForegroundColor Yellow
-    }
-}
-
-# 2. Create missing files if needed
-Write-Host "`n2. Creating missing configuration files..." -ForegroundColor Green
-
-# railway.json
-if (-not (Test-Path "railway.json")) {
-    @'
-{
-  "$schema": "https://railway.app/railway.schema.json",
+﻿{
   "build": {
-    "builder": "NIXPACKS",
-    "buildCommand": "pip install -r requirements.txt"
+    "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "gunicorn --bind 0.0.0.0:$PORT app_azure_fixed:app",
-    "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10
+    "startCommand": "gunicorn --bind 0.0.0.0:$PORT app_azure_fixed:app"
   }
 }
