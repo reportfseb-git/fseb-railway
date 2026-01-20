@@ -1,10 +1,10 @@
-﻿services:
+services:
   - type: web
     name: fseb-flask
     env: python
     pythonVersion: 3.10.0
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app_no_sqlalchemy:app
+    startCommand: gunicorn app_azure_fixed:app
     envVars:
       - key: AZURE_PASSWORD
         sync: false
