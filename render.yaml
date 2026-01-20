@@ -4,4 +4,16 @@
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app_azure_fixed:app
+    envVars:
+      - key: AZURE_PASSWORD
+        sync: false
+      - key: AZURE_SERVER
+        value: fseb.database.windows.net
+      - key: AZURE_DATABASE
+        value: fseb
+      - key: AZURE_USERNAME
+        value: fseb_admin
+      - key: SECRET_KEY
+        generateValue: true
     plan: free
+    autoDeploy: true

@@ -616,3 +616,10 @@ if __name__ == '__main__':
         print("      AZURE_PASSWORD=your_password")
         print("      SECRET_KEY=your_secret_key")
         print("=" * 70)
+
+# Render provides PORT environment variable
+PORT = os.environ.get('PORT', '5000')
+
+if __name__ == '__main__':
+    # Run on all interfaces for Render
+    app.run(host='0.0.0.0', port=int(PORT), debug=False)
